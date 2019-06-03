@@ -19,7 +19,7 @@
     },
     "ImagineBreaker.Server": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "api/values",
       "applicationUrl": "https://localhost:9999;",
       "environmentVariables": {
