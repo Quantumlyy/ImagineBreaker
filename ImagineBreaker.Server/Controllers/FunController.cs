@@ -10,10 +10,8 @@ namespace ImagineBreaker.Server.Controllers
         [HttpGet("slap")]
         public async Task<ActionResult<string>> Get([FromQuery(Name = "target")] string target, [FromQuery(Name = "invoker")] string invoker)
         {
-            using (var result = await Slap.GenerateAsync(target, invoker))
-            {
-                return File(result.ToByteArray(), "image/png");
-            }
+            var result = await Slap.GenerateAsync(target, invoker); 
+            return File(result, "image/png");
         }
     }
 }
