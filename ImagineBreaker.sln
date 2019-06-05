@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagineBreaker.Images", "Im
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagineBreaker.Util", "ImagineBreaker.Util\ImagineBreaker.Util.csproj", "{A5B9ED51-F4DB-4DE2-89DF-BA8E79D5B19F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagineBreaker.Games", "ImagineBreaker.Games\ImagineBreaker.Games.csproj", "{4C73F4B5-C242-4F07-912B-16876B940369}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{A5B9ED51-F4DB-4DE2-89DF-BA8E79D5B19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5B9ED51-F4DB-4DE2-89DF-BA8E79D5B19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5B9ED51-F4DB-4DE2-89DF-BA8E79D5B19F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C73F4B5-C242-4F07-912B-16876B940369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C73F4B5-C242-4F07-912B-16876B940369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C73F4B5-C242-4F07-912B-16876B940369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C73F4B5-C242-4F07-912B-16876B940369}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

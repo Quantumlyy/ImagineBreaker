@@ -8,6 +8,7 @@ namespace ImagineBreaker.Images.Generators.Images.Fun
     {
         public static async Task<byte[]> GenerateAsync(string target, string invoker)
         {
+            // TODO: Make paths relative
             using (var mask = new MagickImage("D:\\Development\\WEBDEV\\Personal\\ImagineBreaker\\ImagineBreaker.Images\\Assets\\Images\\Slap\\slap_mask.png"))
             using (var image = new MagickImage("D:\\Development\\WEBDEV\\Personal\\ImagineBreaker\\ImagineBreaker.Images\\Assets\\Images\\Slap\\slap.png"))
             using (var invokerImage = new MagickImage(await HttpClient.GetByteArrayAsync(invoker)))

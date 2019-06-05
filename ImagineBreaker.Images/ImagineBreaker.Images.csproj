@@ -17,12 +17,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Assets\Images\Slap\slap.png">
+      <None Remove="Assets\Images\Slap\slap.png" />
+      <Content Include="Assets\Images\Slap\slap.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Assets\Images\Slap\slap_mask.png">
+      </Content>
+      <None Remove="Assets\Images\Slap\slap_mask.png" />
+      <Content Include="Assets\Images\Slap\slap_mask.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      </Content>
     </ItemGroup>
 
 </Project>
