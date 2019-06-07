@@ -8,10 +8,8 @@ namespace ImagineBreaker.Text.Generators.Speech
         {
             var chars = baseText.ToUpper().Split("");
             for (int i = 0; i < chars.Length; i += 2)
-            {
                 chars[i] = chars[i].ToLower();
-            }
-
+            
             return String.Join("", chars);
         }
     }
