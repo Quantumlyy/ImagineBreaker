@@ -4,17 +4,17 @@ namespace ImagineBreaker.Games.Fortnite.Responses
 {
     public class Users
     {
-        [JsonProperty("success")]
-        public bool? Success { get; set; }
+        //[JsonProperty("success")]
+        //public bool? Success { get; set; }
         
-        [JsonProperty("error")]
-        public string? Error { get; set; }
+        //[JsonProperty("error")]
+        //public string? Error { get; set; }
         
-        [JsonProperty("eCode")]
-        public string? ECode { get; set; }
+        //[JsonProperty("eCode")]
+        //public string? ECode { get; set; }
         
-        [JsonProperty("errorMessage")]
-        public string? ErrorMessage { get; set; }
+        //[JsonProperty("errorMessage")]
+        //public string? ErrorMessage { get; set; }
         
         [JsonProperty("data")]
         public UsersData? Data { get; set; }
