@@ -23,20 +23,10 @@ namespace ImagineBreaker.Util
         {
             RawLog(LogLevel.Information, message, exception);
         }
-
-        public void Debug(string message, Exception exception = default)
+        
+        public void UsageUpdates(string message, Exception exception = default)
         {
-            RawLog(LogLevel.Debug, message, exception);
-        }
-
-        public void Warning(string message, Exception exception = default)
-        {
-            RawLog(LogLevel.Warning, message, exception);
-        }
-
-        public void Error(Exception exception)
-        {
-            RawLog(LogLevel.Error, string.Empty, exception);
+            RawLog(LogLevel.UsageUpdates, message, exception);
         }
 
         public void RawLog(LogLevel logLevel, string message, Exception exception)
@@ -71,6 +61,7 @@ namespace ImagineBreaker.Util
                     LogLevel.None => "NONE",
                     LogLevel.Trace => "TRCE",
                     LogLevel.Warning => "WARN",
+                    LogLevel.UsageUpdates => "USGU",
                     _ => "NONE"
                 };
         }
@@ -86,6 +77,7 @@ namespace ImagineBreaker.Util
                     LogLevel.None => Color.BurlyWood,
                     LogLevel.Trace => Color.SlateBlue,
                     LogLevel.Warning => Color.Yellow,
+                    LogLevel.UsageUpdates => Color.LightSeaGreen,
                     _ => Color.SlateBlue
                 };
         }

@@ -5,6 +5,8 @@ namespace ImagineBreaker.Util
 {
     public class PerformanceTracker
     {
+        private bool _firstCpuCheckConducted;
+        
         public PerformanceCounter CPU { get; } = new PerformanceCounter
         {
             CategoryName = "Process",
@@ -12,8 +14,6 @@ namespace ImagineBreaker.Util
             InstanceName = Process.GetCurrentProcess().ProcessName,
             ReadOnly = true
         };
-
-        private bool _firstCpuCheckConducted;
 
         public string GetCurrentCpuUsage()
         {

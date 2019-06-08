@@ -15,15 +15,16 @@ namespace ImagineBreaker.Util
         public int SepLength { get; }
         public readonly LogHandler<StartupHelper> Logger;
         
-        private readonly PerformanceTracker PerfTracker;
+        private readonly PerformanceTracker _perfTracker;
         private IConfiguration Configuration { get; }
+        private Timer _usagePushing;
 
         public StartupHelper(IConfiguration configuration, int sepLength = 100)
         {
             Configuration = configuration;
             SepLength = sepLength;
             Logger = LogHandler<StartupHelper>.Log;
-            PerfTracker = new PerformanceTracker();
+            _perfTracker = new PerformanceTracker();
         }
         
         public void Initialize()
@@ -36,8 +37,8 @@ namespace ImagineBreaker.Util
             PrintSeparator();
             PrintSystemInformation();
             PrintSeparator();
-            
-            new Timer(e => { PostStats(); }, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+
+            if (Configuration.GetSection("ImagineBreaker").GetSection("Logging")["UsageUpdates"] == "true") ActivateUpdatePushing();
         }
         
         private void PrintHeader()
@@ -78,12 +79,17 @@ namespace ImagineBreaker.Util
 
         private void PostStats()
         {
-            var mem = PerfTracker.GetCurrentRamUsage();
-            var cpu = PerfTracker.GetCurrentCpuUsage();
-            Logger.Information($"Current Usage -=- Memory: {mem} =-= CPU: {cpu}");
+            var mem = _perfTracker.GetCurrentRamUsage();
+            var cpu = _perfTracker.GetCurrentCpuUsage();
+            Logger.UsageUpdates($"Current Usage -=- Memory: {mem} =-= CPU: {cpu}");
         }
-        
+
         private void PrintSeparator() 
             => Console.WriteLine(new string('-', SepLength), Color.Gray);
+
+        private void ActivateUpdatePushing()
+        {
+            _usagePushing = new Timer(e => { PostStats(); }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+        }
     }
 }
