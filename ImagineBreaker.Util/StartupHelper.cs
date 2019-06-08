@@ -1,8 +1,11 @@
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Colorful;
+using System.Threading;
 using Microsoft.Extensions.Configuration;
+using Colorful;
+
 using Console = Colorful.Console;
 
 namespace ImagineBreaker.Util
@@ -10,12 +13,17 @@ namespace ImagineBreaker.Util
     public class StartupHelper
     {
         public int SepLength { get; }
-        public IConfiguration Configuration { get; }
+        public readonly LogHandler<StartupHelper> Logger;
+        
+        private readonly PerformanceTracker PerfTracker;
+        private IConfiguration Configuration { get; }
 
         public StartupHelper(IConfiguration configuration, int sepLength = 100)
         {
             Configuration = configuration;
             SepLength = sepLength;
+            Logger = LogHandler<StartupHelper>.Log;
+            PerfTracker = new PerformanceTracker();
         }
         
         public void Initialize()
@@ -28,6 +36,8 @@ namespace ImagineBreaker.Util
             PrintSeparator();
             PrintSystemInformation();
             PrintSeparator();
+            
+            new Timer(e => { PostStats(); }, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
         }
         
         private void PrintHeader()
@@ -64,6 +74,13 @@ namespace ImagineBreaker.Util
             };
             
             Console.WriteLineFormatted(formatString, Color.White, formats);
+        }
+
+        private void PostStats()
+        {
+            var mem = PerfTracker.GetCurrentRamUsage();
+            var cpu = PerfTracker.GetCurrentCpuUsage();
+            Logger.Information($"Current Usage -=- Memory: {mem} =-= CPU: {cpu}");
         }
         
         private void PrintSeparator() 
