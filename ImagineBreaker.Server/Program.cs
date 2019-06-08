@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace ImagineBreaker.Server
 {
@@ -12,6 +13,11 @@ namespace ImagineBreaker.Server
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                /* .ConfigureLogging(builder => 
+                    builder
+                        .ClearProviders()
+                        .AddProvider()
+                ) */
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

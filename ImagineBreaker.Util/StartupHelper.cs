@@ -81,7 +81,7 @@ namespace ImagineBreaker.Util
         {
             var mem = _perfTracker.GetCurrentRamUsage();
             var cpu = _perfTracker.GetCurrentCpuUsage();
-            Logger.UsageUpdates($"Current Usage -=- Memory: {mem} =-= CPU: {cpu}");
+            LogHandler<PerformanceTracker>.Log.UsageUpdates($"Current Usage -=- Memory: {mem} =-= CPU: {cpu}");
         }
 
         private void PrintSeparator() 

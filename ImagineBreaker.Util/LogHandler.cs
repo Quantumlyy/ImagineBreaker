@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.IO;
 using ImagineBreaker.Util.Enums;
 
 using Console = Colorful.Console;
@@ -13,10 +14,12 @@ namespace ImagineBreaker.Util
             = new Lazy<LogHandler<T>>(() => new LogHandler<T>());
         
         private readonly object _logLock;
+        private readonly DateTimeOffset _date;
         
         public LogHandler()
         {
             _logLock = new object();
+            _date = DateTimeOffset.Now;
         }
         
         public void Information(string message, Exception exception = default)
@@ -36,11 +39,15 @@ namespace ImagineBreaker.Util
                 var date = $"[{DateTimeOffset.Now:MMM d - hh:mm:ss tt}]";
                 var log = $" [{GetLogLevel(logLevel)}] ";
                 var msg = exception?.ToString() ?? message;
+                var loggedName = typeof(T).Name;
+                var logMessage = $"{date}{log}[{loggedName}] {msg}";
                 
                 Append(date, Color.Gray);
                 Append(log, GetColor(logLevel));
                 Append(msg, Color.White);
                 Console.Write(Environment.NewLine);
+                
+                WriteToFile(logMessage);
             }
         }
         
@@ -50,7 +57,7 @@ namespace ImagineBreaker.Util
             Console.Write(message);
         }
         
-        private string GetLogLevel(LogLevel logLevel)
+        public static string GetLogLevel(LogLevel logLevel)
         {
             return logLevel switch
                 {
@@ -80,6 +87,11 @@ namespace ImagineBreaker.Util
                     LogLevel.UsageUpdates => Color.LightSeaGreen,
                     _ => Color.SlateBlue
                 };
+        }
+        
+        private void WriteToFile(string message)
+        {
+            File.AppendAllText($"{_date.Year}-{_date.Month}-{_date.Day}.log", $"{message}\n");
         }
     }
 }
