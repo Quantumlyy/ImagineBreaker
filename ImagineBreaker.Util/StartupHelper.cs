@@ -89,7 +89,7 @@ namespace ImagineBreaker.Util
 
         private void ActivateUpdatePushing()
         {
-            _usagePushing = new Timer(e => { PostStats(); }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+            _usagePushing = new Timer(e => { PostStats(); }, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(1));
         }
     }
 }

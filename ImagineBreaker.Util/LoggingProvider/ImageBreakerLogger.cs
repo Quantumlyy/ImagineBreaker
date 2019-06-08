@@ -3,14 +3,14 @@ using Microsoft.Extensions.Logging;
 
 namespace ImagineBreaker.Util.LoggingProvider
 {
-    public class ImagineBreakerLogger : ILogger
+    public class ImagineBreakerLogger<T> : ILogger<T>
     {
-        private readonly LogHandler<ImagineBreakerLogger> _logger;
-        internal IExternalScopeProvider ScopeProvider { get; set; }
+        private readonly LogHandler<ImagineBreakerLogger<T>> _log = LogHandler<ImagineBreakerLogger<T>>.Log;
+        private readonly ILogger _logger;
         
-        public ImagineBreakerLogger()
+        public ImagineBreakerLogger(ILoggerFactory factory)
         {
-            _logger = LogHandler<ImagineBreakerLogger>.Log;
+            _logger = factory.CreateLogger(typeof(T).Name);
         }
         
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -21,11 +21,11 @@ namespace ImagineBreaker.Util.LoggingProvider
                 throw new ArgumentNullException(nameof(formatter));
 
             var message = formatter(state, exception);
-            Enums.LogLevel transformedEnum = (Enums.LogLevel)(int)logLevel;
+            var transformedEnum = (Enums.LogLevel)(int)logLevel;
             
             if (!string.IsNullOrEmpty(message) || exception != null)
             {
-                _logger.RawLog(transformedEnum, message, exception);
+                _log.RawLog(transformedEnum, message, exception);
             }
         }
         
@@ -34,20 +34,7 @@ namespace ImagineBreaker.Util.LoggingProvider
             return (int)logLevel != (int)Enums.LogLevel.None;
         }
         
-        public IDisposable BeginScope<TState>(TState state) => ScopeProvider?.Push(state.ToString()) ?? NullScope.Instance;
-    }
-
-    internal class NullScope : IDisposable
-    {
-        public static NullScope Instance { get; } = new NullScope();
-
-        private NullScope()
-        {
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-        }
+        IDisposable ILogger.BeginScope<TState>(TState state)
+            => _logger.BeginScope(state);
     }
 }
