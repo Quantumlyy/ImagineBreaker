@@ -2,20 +2,28 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Colorful;
+using Microsoft.Extensions.Configuration;
 using Console = Colorful.Console;
 
 namespace ImagineBreaker.Util
 {
-    public sealed class StartupHelper
+    public class StartupHelper
     {
-        public int SepLength { get; } = 100;
+        public int SepLength { get; }
+        public IConfiguration Configuration { get; }
+
+        public StartupHelper(IConfiguration configuration, int sepLength = 100)
+        {
+            Configuration = configuration;
+            SepLength = sepLength;
+        }
         
         public void Initialize()
         {
             Console.Title = "ImagineBreaker - QuantumlyTangled";
             Console.WindowHeight = 25;
             Console.WindowWidth = 140;
-            
+
             PrintHeader();
             PrintSeparator();
             PrintSystemInformation();
@@ -42,16 +50,20 @@ namespace ImagineBreaker.Util
         private void PrintSystemInformation()
         {
             var process = Process.GetCurrentProcess();
-            Console.WriteLineFormatted(
+            var formatString =
                 $"    {{0}}: {RuntimeInformation.FrameworkDescription}    |    {{1}}: {RuntimeInformation.OSDescription}\n" +
-                "    {2}: {3} ID / Using {4} Threads / Started On {5}",
-                Color.White,
+                "    {2}: {3} ID / Using {4} Threads / Started On {5}";
+            var formats = new[]
+            {
                 new Formatter("FX Info", Color.Aquamarine),
                 new Formatter("OS Info", Color.Aquamarine),
                 new Formatter("Process", Color.Aquamarine),
                 new Formatter(process.Id.ToString(), Color.Gold),
                 new Formatter(process.Threads.Count.ToString(), Color.Gold),
-                new Formatter($"{process.StartTime:MMM d - hh:mm:ss tt}", Color.Gold));
+                new Formatter($"{process.StartTime:MMM d - hh:mm:ss tt}", Color.Gold)
+            };
+            
+            Console.WriteLineFormatted(formatString, Color.White, formats);
         }
         
         private void PrintSeparator() 
