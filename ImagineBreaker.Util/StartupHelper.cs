@@ -17,7 +17,7 @@ namespace ImagineBreaker.Util
         
         private readonly PerformanceTracker _perfTracker;
         private IConfiguration Configuration { get; }
-        private Timer _usagePushing;
+        public Timer _usagePushing;
 
         public StartupHelper(IConfiguration configuration, int sepLength = 100)
         {
@@ -38,7 +38,7 @@ namespace ImagineBreaker.Util
             PrintSystemInformation();
             PrintSeparator();
 
-            if (Configuration.GetSection("ImagineBreaker").GetSection("Logging")["UsageUpdates"] == "true") ActivateUpdatePushing();
+            if (Convert.ToBoolean(Configuration.GetSection("ImagineBreaker").GetSection("Logging")["UsageUpdates"])) ActivateUpdatePushing();
         }
         
         private void PrintHeader()
@@ -89,7 +89,7 @@ namespace ImagineBreaker.Util
 
         private void ActivateUpdatePushing()
         {
-            _usagePushing = new Timer(e => { PostStats(); }, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(1));
+            _usagePushing = new Timer(e => { PostStats(); }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
         }
     }
 }

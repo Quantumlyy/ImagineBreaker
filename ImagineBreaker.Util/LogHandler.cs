@@ -32,14 +32,14 @@ namespace ImagineBreaker.Util
             RawLog(LogLevel.UsageUpdates, message, exception);
         }
 
-        public void RawLog(LogLevel logLevel, string message, Exception exception)
+        public void RawLog(LogLevel logLevel, string message, Exception exception, string logPoster = "?")
         {
             lock (_logLock)
             {
                 var date = $"[{DateTimeOffset.Now:MMM d - hh:mm:ss tt}]";
                 var log = $" [{GetLogLevel(logLevel)}] ";
                 var msg = exception?.ToString() ?? message;
-                var loggedName = typeof(T).Name;
+                var loggedName = logPoster != "?" ? logPoster : typeof(T).Name;
                 var logMessage = $"{date}{log}[{loggedName}] {msg}";
                 
                 Append(date, Color.Gray);

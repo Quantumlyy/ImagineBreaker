@@ -3,14 +3,17 @@ using Microsoft.Extensions.Logging;
 
 namespace ImagineBreaker.Util.LoggingProvider
 {
-    public class ImagineBreakerLogger<T> : ILogger<T>
+    public class ImagineBreakerLogger : ILogger
     {
-        private readonly LogHandler<ImagineBreakerLogger<T>> _log = LogHandler<ImagineBreakerLogger<T>>.Log;
-        private readonly ILogger _logger;
+        private readonly LogHandler<ImagineBreakerLogger> _log = LogHandler<ImagineBreakerLogger>.Log;
         
-        public ImagineBreakerLogger(ILoggerFactory factory)
+        private readonly string _name;
+        private readonly ImagineBreakerLoggerConfiguration _config;
+        
+        public ImagineBreakerLogger(string name, ImagineBreakerLoggerConfiguration config)
         {
-            _logger = factory.CreateLogger(typeof(T).Name);
+            _name = name;
+            _config = config;
         }
         
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -25,7 +28,7 @@ namespace ImagineBreaker.Util.LoggingProvider
             
             if (!string.IsNullOrEmpty(message) || exception != null)
             {
-                _log.RawLog(transformedEnum, message, exception);
+                _log.RawLog(transformedEnum, message, exception, _name);
             }
         }
         
@@ -34,7 +37,8 @@ namespace ImagineBreaker.Util.LoggingProvider
             return (int)logLevel != (int)Enums.LogLevel.None;
         }
         
-        IDisposable ILogger.BeginScope<TState>(TState state)
-            => _logger.BeginScope(state);
+        public IDisposable BeginScope<TState>(TState state)
+            => null;
+        
     }
 }
