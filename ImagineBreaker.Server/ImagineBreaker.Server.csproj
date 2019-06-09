@@ -7,6 +7,7 @@
     <ItemGroup>
       <ProjectReference Include="..\ImagineBreaker.Games\ImagineBreaker.Games.csproj" />
       <ProjectReference Include="..\ImagineBreaker.Images\ImagineBreaker.Images.csproj" />
+      <ProjectReference Include="..\ImagineBreaker.Text\ImagineBreaker.Text.csproj" />
     </ItemGroup>
 
     <ItemGroup>

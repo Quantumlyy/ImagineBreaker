@@ -1,10 +1,15 @@
 using System;
+using ImagineBreaker.Text.Interfaces;
 
 namespace ImagineBreaker.Text.Generators.Speech
 {
-    public static class Mock
+    public class MockString : ITextTransform
     {
-        public static string Generate(string baseText)
+        public static MockString Mock => LazyInstance.Value;
+        private static Lazy<MockString> LazyInstance { get; }
+            = new Lazy<MockString>(() => new MockString());
+        
+        public string Generate(string baseText)
         {
             var chars = baseText.ToUpper().Split("");
             for (int i = 0; i < chars.Length; i += 2)
