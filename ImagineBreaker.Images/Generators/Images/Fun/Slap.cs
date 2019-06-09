@@ -1,12 +1,18 @@
+using System;
 using System.Threading.Tasks;
 using ImageMagick;
+using ImagineBreaker.Images.Interfaces;
 using static ImagineBreaker.Util.ImagineBreakerSingletons;
 
 namespace ImagineBreaker.Images.Generators.Images.Fun
 {
-    public static class Slap
+    public class SlapImage : IImageInteraction
     {
-        public static async Task<byte[]> GenerateAsync(string target, string invoker)
+        public static SlapImage Slap => LazyInstance.Value;
+        private static Lazy<SlapImage> LazyInstance { get; }
+            = new Lazy<SlapImage>(() => new SlapImage());
+        
+        public async Task<byte[]> GenerateAsync(string target, string invoker)
         {
             // TODO: Make paths relative
             using (var mask = new MagickImage("D:\\Development\\WEBDEV\\Personal\\ImagineBreaker\\ImagineBreaker.Images\\Assets\\Images\\Slap\\slap_mask.png"))

@@ -8,9 +8,9 @@ namespace ImagineBreaker.Server.Controllers
     public class FunController : Controller
     {
         [HttpGet("slap")]
-        public async Task<ActionResult<string>> Get([FromQuery(Name = "target")] string target, [FromQuery(Name = "invoker")] string invoker)
+        public async Task<ActionResult<string>> GetSlap([FromQuery(Name = "target")] string target, [FromQuery(Name = "invoker")] string invoker)
         {
-            var result = await Slap.GenerateAsync(target, invoker); 
+            var result = await SlapImage.Slap.GenerateAsync(target, invoker); 
             return File(result, "image/png");
         }
     }
