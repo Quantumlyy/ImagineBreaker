@@ -11,9 +11,10 @@ namespace ImagineBreaker.Text.Generators.Speech
         
         public string Generate(string baseText)
         {
-            var chars = baseText.ToUpper().Split("");
+            var chars = baseText.ToUpper().ToCharArray();
             for (int i = 0; i < chars.Length; i += 2)
-                chars[i] = chars[i].ToLower();
+                chars[i] = Char.ToLower(chars[i]);
+            
             
             return String.Join("", chars);
         }
