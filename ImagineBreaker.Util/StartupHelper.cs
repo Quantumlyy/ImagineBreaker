@@ -1,11 +1,13 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Colorful;
-
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.ApplicationServices;
 using Console = Colorful.Console;
 
 namespace ImagineBreaker.Util
@@ -15,30 +17,36 @@ namespace ImagineBreaker.Util
         public int SepLength { get; }
         public readonly LogHandler<StartupHelper> Logger;
         
-        private readonly PerformanceTracker _perfTracker;
+        private readonly PerformanceManager _perfManager;
         private IConfiguration Configuration { get; }
-        public Timer _usagePushing;
+        
+        private Timer _usagePushingTimer;
+        private Timer _garbageCollectionTimer;
 
         public StartupHelper(IConfiguration configuration, int sepLength = 100)
         {
             Configuration = configuration;
             SepLength = sepLength;
             Logger = LogHandler<StartupHelper>.Log;
-            _perfTracker = new PerformanceTracker();
+            _perfManager = new PerformanceManager();
         }
         
         public void Initialize()
         {
             Console.Title = "ImagineBreaker - QuantumlyTangled";
             Console.WindowHeight = 25;
-            Console.WindowWidth = 140;
+            Console.WindowWidth = 150;
 
             PrintHeader();
             PrintSeparator();
             PrintSystemInformation();
             PrintSeparator();
+            
+            _perfManager.GetCurrentRamUsage();
+            _perfManager.GetCurrentCpuUsage();
 
-            if (Convert.ToBoolean(Configuration.GetSection("ImagineBreaker").GetSection("Logging")["UsageUpdates"])) ActivateUpdatePushing();
+            ActivateGarbageCollectionTimer();
+            if (Convert.ToBoolean(Configuration.GetSection("ImagineBreaker").GetSection("Logging")["UsageUpdates"])) ActivateUpdatePushingTimer();
         }
         
         private void PrintHeader()
@@ -77,19 +85,24 @@ namespace ImagineBreaker.Util
             Console.WriteLineFormatted(formatString, Color.White, formats);
         }
 
-        private void PostStats()
+        private void TimePostStats()
         {
-            var mem = _perfTracker.GetCurrentRamUsage();
-            var cpu = _perfTracker.GetCurrentCpuUsage();
-            LogHandler<PerformanceTracker>.Log.UsageUpdates($"Current Usage -=- Memory: {mem} =-= CPU: {cpu}");
+            var mem = _perfManager.GetCurrentRamUsage();
+            var cpu = _perfManager.GetCurrentCpuUsage();
+            LogHandler<PerformanceManager>.Log.UsageUpdates($"Current Usage -=- Memory: {mem} =-= CPU: {cpu}");
         }
 
         private void PrintSeparator() 
             => Console.WriteLine(new string('-', SepLength), Color.Gray);
 
-        private void ActivateUpdatePushing()
+        private void ActivateUpdatePushingTimer()
         {
-            _usagePushing = new Timer(e => { PostStats(); }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+            _usagePushingTimer = new Timer(e => { TimePostStats(); }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+        }
+        
+        private void ActivateGarbageCollectionTimer()
+        {
+            _garbageCollectionTimer = new Timer(e => { _perfManager.CollectGarbage(); }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
         }
     }
 }

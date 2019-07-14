@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ImagineBreaker.Util
 {
-    public class PerformanceTracker
+    public class PerformanceManager
     {
         private bool _firstCpuCheckConducted;
         
@@ -31,6 +31,12 @@ namespace ImagineBreaker.Util
             {
                 return $"{Math.Round(proc.PrivateMemorySize64 / 1e+6, 2).ToString("F1")}MB";
             }
+        }
+
+        public void CollectGarbage()
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
     }
 }
