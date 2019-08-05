@@ -1,13 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Colorful;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.ApplicationServices;
+
 using Console = Colorful.Console;
 
 namespace ImagineBreaker.Util
@@ -45,8 +43,10 @@ namespace ImagineBreaker.Util
             _perfManager.GetCurrentRamUsage();
             _perfManager.GetCurrentCpuUsage();
 
-            ActivateGarbageCollectionTimer();
-            if (Convert.ToBoolean(Configuration.GetSection("ImagineBreaker").GetSection("Logging")["UsageUpdates"])) ActivateUpdatePushingTimer();
+            if (Convert.ToBoolean(Configuration.GetSection("ImagineBreaker").GetSection("Performance").GetSection("ForcedGC")["status"])) 
+                ActivateGarbageCollectionTimer();
+            if (Convert.ToBoolean(Configuration.GetSection("ImagineBreaker").GetSection("Logging").GetSection("UsageUpdates")["status"]))
+                ActivateUpdatePushingTimer();
         }
         
         private void PrintHeader()
@@ -97,12 +97,36 @@ namespace ImagineBreaker.Util
 
         private void ActivateUpdatePushingTimer()
         {
-            _usagePushingTimer = new Timer(e => { TimePostStats(); }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+            var startDelay = Convert.ToInt32(Configuration
+                .GetSection("ImagineBreaker")
+                .GetSection("Logging")
+                .GetSection("UsageUpdates")["startDelayMin"]);
+            var delay = Convert.ToInt32(Configuration
+                .GetSection("ImagineBreaker")
+                .GetSection("Logging")
+                .GetSection("UsageUpdates")["intervalMin"]);
+            
+            _usagePushingTimer = new Timer(e =>
+            {
+                TimePostStats();
+            }, null, TimeSpan.FromMinutes(startDelay), TimeSpan.FromMinutes(delay));
         }
         
         private void ActivateGarbageCollectionTimer()
         {
-            _garbageCollectionTimer = new Timer(e => { _perfManager.CollectGarbage(); }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+            var startDelay = Convert.ToInt32(Configuration
+                .GetSection("ImagineBreaker")
+                .GetSection("Performance")
+                .GetSection("ForcedGC")["startDelayMin"]);
+            var delay = Convert.ToInt32(Configuration
+                .GetSection("ImagineBreaker")
+                .GetSection("Performance")
+                .GetSection("ForcedGC")["intervalMin"]);
+            
+            _garbageCollectionTimer = new Timer(e =>
+            {
+                _perfManager.CollectGarbage();
+            }, null, TimeSpan.FromMinutes(startDelay), TimeSpan.FromMinutes(delay));
         }
     }
 }
