@@ -14,9 +14,8 @@ namespace ImagineBreaker.Images.Generators.Images.Fun
         
         public async Task<byte[]> GenerateAsync(string target, string invoker)
         {
-            // TODO: Make paths relative
-            using (var mask = new MagickImage("D:\\Development\\WEBDEV\\Personal\\ImagineBreaker\\ImagineBreaker.Images\\Assets\\Images\\Slap\\slap_mask.png"))
-            using (var image = new MagickImage("D:\\Development\\WEBDEV\\Personal\\ImagineBreaker\\ImagineBreaker.Images\\Assets\\Images\\Slap\\slap.png"))
+            using (var mask = new MagickImage(@"./Assets/Images/Slap/slap_mask.png"))
+            using (var image = new MagickImage(@"./Assets/Images/Slap/slap.png"))
             using (var invokerImage = new MagickImage(await HttpClient.GetByteArrayAsync(invoker)))
             using (var targetImage = new MagickImage(await HttpClient.GetByteArrayAsync(target)))
             {
@@ -25,10 +24,7 @@ namespace ImagineBreaker.Images.Generators.Images.Fun
 
 				
                 targetImage.Resize(169, 169);
-                targetImage.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 1.2f);
-				
                 invokerImage.Resize(131, 131);
-                invokerImage.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 1.2f);
 
                 image.SetWriteMask(mask);
                 image.Composite(targetImage, 159, 180, CompositeOperator.Over);

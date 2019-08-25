@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Assets\Images" />
       <Folder Include="Generators\Images" />
     </ItemGroup>
 
@@ -15,17 +14,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ImagineBreaker.Util\ImagineBreaker.Util.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Assets\Images\Slap\slap.png" />
-      <Content Include="Assets\Images\Slap\slap.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Assets\Images\Slap\slap_mask.png" />
-      <Content Include="Assets\Images\Slap\slap_mask.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
     </ItemGroup>
 
 </Project>

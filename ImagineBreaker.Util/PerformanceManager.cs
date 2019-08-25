@@ -27,10 +27,7 @@ namespace ImagineBreaker.Util
         
         public string GetCurrentRamUsage()
         {
-            using (var proc = Process.GetCurrentProcess())
-            {
-                return $"{Math.Round(proc.PrivateMemorySize64 / 1e+6, 2).ToString("F1")}MB";
-            }
+            return $"{Math.Round(GC.GetTotalMemory(true) / 1e+6, 2).ToString("F1")}MB";
         }
 
         public void CollectGarbage()

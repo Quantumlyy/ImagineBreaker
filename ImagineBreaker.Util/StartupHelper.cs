@@ -21,7 +21,7 @@ namespace ImagineBreaker.Util
         private Timer _usagePushingTimer;
         private Timer _garbageCollectionTimer;
 
-        public StartupHelper(IConfiguration configuration, int sepLength = 100)
+        public StartupHelper(IConfiguration configuration, int sepLength = 150)
         {
             Configuration = configuration;
             SepLength = sepLength;
