@@ -14,11 +14,9 @@ namespace ImagineBreaker.Images.Generators.Effects.General
         
         public async Task<byte[]> ModifyAsync(string targetImage)
         {
-            using (var image = new MagickImage(await HttpClient.GetByteArrayAsync(targetImage)))
-            {
-                image.Grayscale();
-                return image.ToByteArray();
-            }
+            using var image = new MagickImage(await HttpClient.GetByteArrayAsync(targetImage));
+            image.Grayscale();
+            return image.ToByteArray();
         }
     }
 }

@@ -12,9 +12,8 @@ namespace ImagineBreaker.Util
 {
     public class StartupHelper
     {
-        public int SepLength { get; }
-        public readonly LogHandler<StartupHelper> Logger;
-        
+        private int SepLength { get; }
+
         private readonly PerformanceManager _perfManager;
         private IConfiguration Configuration { get; }
         
@@ -25,7 +24,6 @@ namespace ImagineBreaker.Util
         {
             Configuration = configuration;
             SepLength = sepLength;
-            Logger = LogHandler<StartupHelper>.Log;
             _perfManager = new PerformanceManager();
         }
         
@@ -40,7 +38,7 @@ namespace ImagineBreaker.Util
             PrintSystemInformation();
             PrintSeparator();
             
-            _perfManager.GetCurrentRamUsage();
+            PerformanceManager.GetCurrentRamUsage();
             _perfManager.GetCurrentCpuUsage();
 
             if (Convert.ToBoolean(Configuration.GetSection("ImagineBreaker").GetSection("Performance").GetSection("ForcedGC")["status"])) 
@@ -49,9 +47,9 @@ namespace ImagineBreaker.Util
                 ActivateUpdatePushingTimer();
         }
         
-        private void PrintHeader()
+        private static void PrintHeader()
         {
-            var header = @"
+            const string header = @"
  _____                      _           ______                _             
 |_   _|                    (_)          | ___ \              | |            
   | | _ __ ___   __ _  __ _ _ _ __   ___| |_/ /_ __ ___  __ _| | _____ _ __ 
@@ -66,7 +64,7 @@ namespace ImagineBreaker.Util
         
         // TODO: Change color coding
         // TODO: Provide more ASP related data
-        private void PrintSystemInformation()
+        private static void PrintSystemInformation()
         {
             var process = Process.GetCurrentProcess();
             var formatString =
@@ -87,7 +85,7 @@ namespace ImagineBreaker.Util
 
         private void TimePostStats()
         {
-            var mem = _perfManager.GetCurrentRamUsage();
+            var mem = PerformanceManager.GetCurrentRamUsage();
             var cpu = _perfManager.GetCurrentCpuUsage();
             LogHandler<PerformanceManager>.Log.UsageUpdates($"Current Usage -=- Memory: {mem} =-= CPU: {cpu}");
         }
@@ -125,7 +123,7 @@ namespace ImagineBreaker.Util
             
             _garbageCollectionTimer = new Timer(e =>
             {
-                _perfManager.CollectGarbage();
+                PerformanceManager.CollectGarbage();
             }, null, TimeSpan.FromMinutes(startDelay), TimeSpan.FromMinutes(delay));
         }
     }

@@ -5,19 +5,19 @@ using Microsoft.Extensions.Logging;
 
 namespace ImagineBreaker.Server
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(builder => 
                     builder
                         .ClearProviders()
-                        .AddProvider(new ImagineBreakerLoggerProvider(new ImagineBreakerLoggerConfiguration()))
+                        .AddProvider(new ImagineBreakerLoggerProvider())
                 )
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }

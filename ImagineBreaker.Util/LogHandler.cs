@@ -51,13 +51,13 @@ namespace ImagineBreaker.Util
             }
         }
         
-        private void Append(string message, Color color)
+        private static void Append(string message, Color color)
         {
             Console.ForegroundColor = color;
             Console.Write(message);
         }
-        
-        public static string GetLogLevel(LogLevel logLevel)
+
+        private static string GetLogLevel(LogLevel logLevel)
         {
             return logLevel switch
                 {
@@ -73,7 +73,7 @@ namespace ImagineBreaker.Util
                 };
         }
 
-        private Color GetColor(LogLevel logLevel)
+        private static Color GetColor(LogLevel logLevel)
         {
             return logLevel switch
                 {

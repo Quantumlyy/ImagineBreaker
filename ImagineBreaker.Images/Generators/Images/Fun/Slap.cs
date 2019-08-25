@@ -14,24 +14,19 @@ namespace ImagineBreaker.Images.Generators.Images.Fun
         
         public async Task<byte[]> GenerateAsync(string target, string invoker)
         {
-            using (var mask = new MagickImage(@"./Assets/Images/Slap/slap_mask.png"))
-            using (var image = new MagickImage(@"./Assets/Images/Slap/slap.png"))
-            using (var invokerImage = new MagickImage(await HttpClient.GetByteArrayAsync(invoker)))
-            using (var targetImage = new MagickImage(await HttpClient.GetByteArrayAsync(target)))
-            {
-                targetImage.BackgroundColor = MagickColors.Transparent;
-                image.BackgroundColor = MagickColors.Transparent;
+            using var mask = new MagickImage(@"./Assets/Images/Slap/slap_mask.png");
+            using var image = new MagickImage(@"./Assets/Images/Slap/slap.png");
+            using var invokerImage = new MagickImage(await HttpClient.GetByteArrayAsync(invoker));
+            using var targetImage = new MagickImage(await HttpClient.GetByteArrayAsync(target));
 
-				
-                targetImage.Resize(169, 169);
-                invokerImage.Resize(131, 131);
+            targetImage.Resize(169, 169);
+            invokerImage.Resize(131, 131);
 
-                image.SetWriteMask(mask);
-                image.Composite(targetImage, 159, 180, CompositeOperator.Over);
-                image.Composite(invokerImage, 410, 107, CompositeOperator.Over);
+            image.SetWriteMask(mask);
+            image.Composite(targetImage, 159, 180, CompositeOperator.Over);
+            image.Composite(invokerImage, 410, 107, CompositeOperator.Over);
 
-                return image.ToByteArray();
-            }
+            return image.ToByteArray();
         }
     }
 }

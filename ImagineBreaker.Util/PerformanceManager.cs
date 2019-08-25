@@ -6,8 +6,8 @@ namespace ImagineBreaker.Util
     public class PerformanceManager
     {
         private bool _firstCpuCheckConducted;
-        
-        public PerformanceCounter CPU { get; } = new PerformanceCounter
+
+        private PerformanceCounter Cpu { get; } = new PerformanceCounter
         {
             CategoryName = "Process",
             CounterName = "% Processor Time",
@@ -17,20 +17,19 @@ namespace ImagineBreaker.Util
 
         public string GetCurrentCpuUsage()
         {
-            if (!_firstCpuCheckConducted)
-            {
-                CPU.NextValue();
-                _firstCpuCheckConducted = true;
-            }
-            return CPU.NextValue().ToString("P");
+            if (_firstCpuCheckConducted) return Cpu.NextValue().ToString("P");
+            Cpu.NextValue();
+            _firstCpuCheckConducted = true;
+            return Cpu.NextValue().ToString("P");
         }
         
-        public string GetCurrentRamUsage()
+        public static string GetCurrentRamUsage()
         {
-            return $"{Math.Round(GC.GetTotalMemory(true) / 1e+6, 2).ToString("F1")}MB";
+            var proc = Process.GetCurrentProcess();
+            return $"{Math.Round(proc.PrivateMemorySize64 / 1e+6, 2):F1}MB";
         }
 
-        public void CollectGarbage()
+        public static void CollectGarbage()
         {
             GC.Collect();
             GC.WaitForPendingFinalizers();

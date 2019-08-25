@@ -8,12 +8,10 @@ namespace ImagineBreaker.Util.LoggingProvider
         private readonly LogHandler<ImagineBreakerLogger> _log = LogHandler<ImagineBreakerLogger>.Log;
         
         private readonly string _name;
-        private readonly ImagineBreakerLoggerConfiguration _config;
-        
-        public ImagineBreakerLogger(string name, ImagineBreakerLoggerConfiguration config)
+
+        public ImagineBreakerLogger(string name)
         {
             _name = name;
-            _config = config;
         }
         
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
