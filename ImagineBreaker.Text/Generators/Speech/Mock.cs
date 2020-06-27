@@ -15,7 +15,6 @@ namespace ImagineBreaker.Text.Generators.Speech
             for (var i = 0; i < chars.Length; i += 2)
                 chars[i] = char.ToLower(chars[i]);
             
-            
             return string.Join("", chars);
         }
     }

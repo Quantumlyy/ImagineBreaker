@@ -8,7 +8,6 @@ namespace ImagineBreaker.Util.Enums
         Warning = 3,
         Error = 4,
         Critical = 5,
-        None  = 6,
-        UsageUpdates = 7
+        None  = 6
     }
 }

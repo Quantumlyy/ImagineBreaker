@@ -26,11 +26,6 @@ namespace ImagineBreaker.Util
         {
             RawLog(LogLevel.Information, message, exception);
         }
-        
-        public void UsageUpdates(string message, Exception exception = default)
-        {
-            RawLog(LogLevel.UsageUpdates, message, exception);
-        }
 
         public void RawLog(LogLevel logLevel, string message, Exception exception, string logPoster = "?")
         {
@@ -68,7 +63,6 @@ namespace ImagineBreaker.Util
                     LogLevel.None => "NONE",
                     LogLevel.Trace => "TRCE",
                     LogLevel.Warning => "WARN",
-                    LogLevel.UsageUpdates => "USGU",
                     _ => "NONE"
                 };
         }
@@ -84,14 +78,13 @@ namespace ImagineBreaker.Util
                     LogLevel.None => Color.BurlyWood,
                     LogLevel.Trace => Color.SlateBlue,
                     LogLevel.Warning => Color.Yellow,
-                    LogLevel.UsageUpdates => Color.LightSeaGreen,
                     _ => Color.SlateBlue
                 };
         }
         
         private void WriteToFile(string message)
         {
-            File.AppendAllText($"{_date.Year}-{_date.Month}-{_date.Day}.log", $"{message}\n");
+            File.AppendAllText($"logs/{_date.Year}-{_date.Month}-{_date.Day}.log", $"{message}\n");
         }
     }
 }

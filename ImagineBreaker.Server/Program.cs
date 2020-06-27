@@ -1,3 +1,5 @@
+using System;
+using ImageMagick;
 using ImagineBreaker.Util.LoggingProvider;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
